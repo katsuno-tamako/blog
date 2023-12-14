@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neko.neko.Dao.PhotographDao.PhotographDao">
+
+    <insert id="insertPhoto" parameterType="com.neko.neko.POJO.PO.photographPO.PhotographPO">
+        insert into photograph(imagePath,imageName,imageClassify,imageIntroduction,imageDate,album,author)
+            values (#{imagePath},#{imageName},#{imageClassify},#{imageIntroduction},#{imageDate},#{album},#{author})
+    </insert>
+
+    <select id="selectPhotoByAlbum" parameterType="String" resultType="com.neko.neko.POJO.PO.photographPO.PhotographPO">
+        select * from photograph where album=#{album}
+    </select>
+
+    <delete id="deleteAlbumImageByPid" parameterType="Integer">
+        delete from photograph where pid=#{pid}
+    </delete>
+
+
+</mapper>

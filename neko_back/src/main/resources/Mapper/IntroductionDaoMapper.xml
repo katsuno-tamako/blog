@@ -1,0 +1,39 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neko.neko.Dao.AdminDao.IndexInfoDao">
+
+    <select id="selectAllIndexInfo" resultType="com.neko.neko.POJO.PO.adminPO.IndexInfoPO">
+
+        select * from indexinfo
+
+    </select>
+
+    <update id="updateIndexInfo" parameterType="com.neko.neko.POJO.PO.adminPO.IndexInfoPO">
+        update indexinfo
+            <set>
+                <if test="Introduction!=null and Introduction!=''">
+                    Introduction=#{Introduction}
+                </if>
+                <if test="Introduction!=null and Introduction!=''">
+                    ,Email=#{Email}
+                </if>
+                <if test="Introduction!=null and Introduction!=''">
+                    ,GitHubUrl=#{GitHubUrl}
+                </if>
+                <if test="Introduction!=null and Introduction!=''">
+                    ,QQ=#{QQ}
+                </if>
+                <if test="Introduction!=null and Introduction!=''">
+                    ,BiliBili=#{BiliBili}
+                </if>
+                <if test="Introduction!=null and Introduction!=''">
+                    ,weibo=#{weibo}
+                </if>
+            </set>
+        where Iid=1
+    </update>
+
+
+
+</mapper>

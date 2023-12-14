@@ -1,0 +1,60 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neko.neko.Dao.DBDao.DBDao">
+
+    <select id="selectAllDB" resultType="com.neko.neko.POJO.PO.DatabasePO.DBPO">
+        select * from db
+    </select>
+
+    <insert id="insertDB" parameterType="com.neko.neko.POJO.PO.DatabasePO.DBPO">
+        insert into db(DName,MainDClssify,SubDClassify,DContent,DataId)
+            values (#{DName},#{MainDClssify},#{SubDClassify},#{DContent},#{DataId})
+    </insert>
+    
+    <select id="selectDBByDName" parameterType="String" resultType="com.neko.neko.POJO.PO.DatabasePO.DBPO">
+        select * from db where DName=#{DName}
+    </select>
+
+    <select id="selectDBByMainDClassify" parameterType="String" resultType="com.neko.neko.POJO.PO.DatabasePO.DBPO">
+        select * from db where MainDClssify=#{MainDClssify}
+    </select>
+
+    <select id="selectDBByDBID" parameterType="String" resultType="com.neko.neko.POJO.PO.DatabasePO.DBPO">
+        select * from db where DataId = #{DataId}
+    </select>
+
+    <delete id="DeleteDB" parameterType="String">
+        delete from db where DataId=#{DataId}
+    </delete>
+    
+    <update id="UpdateDB" parameterType="com.neko.neko.POJO.PO.DatabasePO.DBPO">
+        update db
+        <set>
+            <if test="DName!=null and DName!=''">DName=#{DName}</if>
+            <if test="MainDClssify!=null and MainDClssify!=''">,MainDClssify=#{MainDClssify}</if>
+            <if test="SubDClassify!=null and SubDClassify!=''">,SubDClassify=#{SubDClassify}</if>
+            <if test="DContent!=null and DContent!=''">,DContent=#{DContent}</if>
+        </set>
+        where DataId=#{DataId}
+    </update>
+
+    <select id="selectMainClassify" resultType="String">
+        select MainDClssify from db group by MainDClssify order by convert (MainDClssify using gbk) DESC
+    </select>
+    
+    <select id="selectDBByKeyword" resultType="com.neko.neko.POJO.PO.DatabasePO.DBPO" parameterType="String">
+        select * from db where DName like concat('%',#{keyword},'%')
+                    or  MainDClssify like concat('%',#{keyword},'%')
+                    or  SubDClassify like concat('%',#{keyword},'%')
+    </select>
+
+    <select id="selectDBSubClassify" resultType="String" parameterType="String">
+        select SubDClassify from db  where MainDClssify=#{MainDClssify} group by SubDClassify
+    </select>
+
+    <select id="selectDBBySubClassify" resultType="com.neko.neko.POJO.PO.DatabasePO.DBPO" parameterType="String">
+        select * from db  where SubDClassify=#{SubDClassify} order by DName desc
+    </select>
+
+</mapper>

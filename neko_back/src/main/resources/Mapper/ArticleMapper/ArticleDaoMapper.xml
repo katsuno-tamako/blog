@@ -1,0 +1,105 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neko.neko.Dao.ArticleDao.ArticleDao">
+
+    <resultMap id="article" type="com.neko.neko.POJO.PO.articlesPO.ArticlesPO">
+        <id column="id" property="id"/>
+        <result property="date" column="date"/>
+        <result property="articleId" column="articleId"/>
+        <result property="context_mainTitle" column="context_mainTitle"/>
+        <result property="context_subTitle" column="context_subTitle"/>
+        <result property="context" column="context"/>
+        <result property="mainClassify" column="mainClassify"/>
+        <result property="subClassify" column="subClassify"/>
+        <result property="context_label" column="context_label"/>
+        <result property="isComment" column="isComment"/>
+        <result property="isCover" column="isCover"/>
+        <result property="adminName" column="adminName"/>
+        <result property="adminId" column="adminId"/>
+        <association property="adminPO" javaType="com.neko.neko.POJO.PO.adminPO.AdminPO">
+            <id column="id" property="id"/>
+            <result property="adminAccount" column="adminAccount"/>
+            <result property="adminPassword" column="adminPassword"/>
+            <result property="adminId" column="adminId"/>
+            <result property="adminName" column="adminName"/>
+            <result property="adminImg" column="adminImg"/>
+            <result property="authority" column="authority"/>
+        </association>
+        <association property="article_gradePO" javaType="com.neko.neko.POJO.PO.articlesPO.Article_gradePO">
+            <id property="gid" column="gid"/>
+            <result column="articleId" property="articleId"/>
+            <result column="clickNum" property="clickNum"/>
+            <result column="thumb_up" property="thumb_up"/>
+        </association>
+    </resultMap>
+
+    <insert id="insertArticle" parameterType="com.neko.neko.POJO.PO.articlesPO.ArticlesPO">
+        insert into
+            article(
+            date, articleId, context_mainTitle, context_subTitle,
+            context, mainClassify, subClassify, context_label,
+            isComment, isCover, coverImg, adminName,adminId
+            )
+            values (
+            #{date},#{articleId},#{context_mainTitle},#{context_subTitle},
+            #{context},#{mainClassify},#{subClassify},#{context_label},
+            #{isComment},#{isCover},#{coverImg},#{adminName},#{adminId}
+            )
+    </insert>
+
+    <select id="selectAllArticles" resultMap="article">
+        select * from article atl
+        left join admin ad on atl.adminId=ad.adminId order by atl.id desc
+    </select>
+
+    <select id="selectArticleById" resultMap="article">
+        select * from article atl
+        left join admin ad on atl.adminId=ad.adminId
+        left join article_grade g on g.articleId=atl.articleId
+        where atl.articleId = #{articleId}
+    </select>
+
+    <delete id="deleteArticleById" parameterType="String">
+        delete from article where articleId = #{articleId}
+    </delete>
+
+    <update id="updateArticleById" parameterType="com.neko.neko.POJO.PO.articlesPO.ArticlesPO">
+        update article
+            <set>
+                <if test="context_mainTitle!=null and context_mainTitle!=''">context_mainTitle=#{context_mainTitle}</if>
+                <if test="context_subTitle!=null and context_subTitle!=''">,context_subTitle=#{context_subTitle}</if>
+                <if test="context!=null and context!=''">,context=#{context}</if>
+                <if test="mainClassify!=null and mainClassify!=''">,mainClassify=#{mainClassify}</if>
+                <if test="subClassify!=null and subClassify!=''">,subClassify=#{subClassify}</if>
+                <if test="coverImg!=null and coverImg!=''">,coverImg=#{coverImg}</if>
+            </set>
+            where articleId=#{articleId}
+    </update>
+
+    <select id="selectArticlesByKey" resultMap="article" parameterType="String">
+        select * from article atl
+        left join admin ad on atl.adminId=ad.adminId
+        where atl.context_mainTitle like concat('%',#{key},'%') order by atl.articleId desc
+    </select>
+    <select id="selectArticleByClassify" resultMap="article" parameterType="String">
+        select * from article atl
+        left join admin ad on atl.adminId=ad.adminId
+        where atl.mainClassify=#{classify} order by atl.articleId desc
+    </select>
+
+    <select id="selectArticleBySubClassify" resultMap="article" parameterType="String">
+        select * from article atl
+        left join admin ad on atl.adminId=ad.adminId
+        where atl.subClassify=#{sub} order by atl.articleId desc
+    </select>
+
+    <select id="selectArticleOrderByClickNum" resultMap="article">
+        select * from article atl
+        left join admin ad on atl.adminId=ad.adminId
+        left join article_grade g on g.articleId=atl.articleId
+        order by g.clickNum desc
+        limit 5
+    </select>
+
+</mapper>

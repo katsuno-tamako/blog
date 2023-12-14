@@ -1,0 +1,54 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neko.neko.Dao.PhotographDao.AlbumsDao">
+
+    <select id="selectAllAlbums" resultType="com.neko.neko.POJO.PO.photographPO.AlbumsPO">
+        select * from albums
+    </select>
+
+    <insert id="createNewAblums" parameterType="com.neko.neko.POJO.PO.photographPO.AlbumsPO">
+        insert  into albums(albumName,albumId,coverImage)
+            values (#{albumName},#{albumId},#{coverImage})
+    </insert>
+
+    <update id="updateAlbumCover" parameterType="com.neko.neko.POJO.PO.photographPO.AlbumsPO">
+        update albums
+            <set>
+                <if test="coverImage!=null">
+                    coverImage=#{coverImage}
+                </if>
+            </set>
+            where albumId=#{albumId}
+    </update>
+
+    <delete id="deleteAlbumByAid" parameterType="String">
+        delete from albums where albumId=#{albumId}
+    </delete>
+
+
+    <resultMap id="albums" type="com.neko.neko.POJO.PO.photographPO.AlbumsPO">
+        <id property="aid" column="aid"/>
+        <result column="albumName" property="albumName"/>
+        <result column="albumId" property="albumId"/>
+        <result column="coverImage" property="coverImage"/>
+        <collection property="photographPOList" ofType="com.neko.neko.POJO.PO.photographPO.PhotographPO">
+            <id column="pid" property="pid"/>
+            <result column="imagePath" property="imagePath"/>
+            <result column="imageName" property="imageName"/>
+            <result column="imageClassify" property="imageClassify"/>
+            <result column="imageIntroduction" property="imageIntroduction"/>
+            <result column="imageDate" property="imageDate"/>
+            <result column="album" property="album"/>
+            <result column="author" property="author"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectAlbumsAndImg" resultMap="albums">
+        select * from albums as a ,  photograph as p
+            where a.albumId = p.album
+    </select>
+
+</mapper>

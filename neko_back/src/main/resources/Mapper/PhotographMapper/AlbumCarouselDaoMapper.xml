@@ -1,0 +1,19 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neko.neko.Dao.PhotographDao.AlbumCarouselDao">
+
+    <insert id="insertImage" parameterType="com.neko.neko.POJO.PO.photographPO.AlbumCarouselPO">
+        insert into albumcarousel(path) values (#{path})
+    </insert>
+
+    <select id="selectImage" resultType="com.neko.neko.POJO.PO.photographPO.AlbumCarouselPO">
+        select * from albumcarousel
+    </select>
+
+    <delete id="deleteAlbumCarousel" parameterType="Integer">
+        delete from albumcarousel where id=#{id}
+    </delete>
+
+</mapper>

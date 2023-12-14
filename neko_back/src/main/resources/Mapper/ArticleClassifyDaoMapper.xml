@@ -1,0 +1,57 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neko.neko.Dao.ArticleDao.ArticleClassifyDao">
+
+
+    <resultMap id="mainClassify" type="com.neko.neko.POJO.PO.articlesPO.ArticleClassifyPO">
+        <id column="id" property="id"/>
+        <result column="classifyName" property="classifyName"/>
+        <result column="articleLevel" property="articleLevel"/>
+        <result column="cid" property="cid"/>
+        <collection property="subClassifyPOList"
+                    column="cid"
+                    ofType="com.neko.neko.POJO.PO.articlesPO.SubClassifyPO">
+            <id column="subid" property="subid"/>
+            <result column="cid" property="cid"/>
+            <result column="subClassifyName" property="subClassifyName"/>
+        </collection>
+    </resultMap>
+
+
+    <insert id="insertArticleClassify" parameterType="com.neko.neko.POJO.PO.articlesPO.ArticleClassifyPO">
+        insert into articleclassify (classifyName, articleLevel,cid)
+        values (#{classifyName}, #{articleLevel},#{cid});
+    </insert>
+
+    <select id="selectArticleClassify" parameterType="String" resultMap="mainClassify">
+        select articleClassify,subClassify from articleClassify as main
+         left join subClassify as sub
+         on main.cid = sub.cid
+         where main.cid=#{cid}
+    </select>
+
+    <select id="selectAllArticleClassify" resultMap="mainClassify">
+          select * from articleClassify main left join subClassify sub
+            on
+            main.cid = sub.cid
+    </select>
+
+    <delete id="deleteSubClassify" parameterType="String">
+        delete from subClassify where subClassifyName=#{cid}
+    </delete>
+
+    <select id="selectSubClassify" parameterType="String" resultType="com.neko.neko.POJO.PO.articlesPO.SubClassifyPO">
+        select * from subClassify where cid=#{cid}
+    </select>
+
+    <delete id="deleteMainClassify" parameterType="String">
+        delete from articleClassify where cid=#{cid}
+    </delete>
+
+    <select id="selectCidByMainClassify" parameterType="String" resultType="String">
+        select cid from articleclassify where classifyName=#{classifyName}
+    </select>
+
+</mapper>

@@ -1,0 +1,62 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neko.neko.Dao.AdminDao.AdminDao">
+
+    <select id="selectAdminAccount" resultType="com.neko.neko.POJO.PO.adminPO.AdminPO">
+        select * from admin
+        where adminAccount=#{adminAccount} and adminPassword=#{adminPassword}
+    </select>
+
+    <update id="changePassword" parameterType="com.neko.neko.POJO.PO.adminPO.AdminPO">
+        update admin
+            <set>
+                <if test="adminPassword!='' and adminPassword!=null">
+                    adminPassword=#{adminPassword}
+                </if>
+            </set>
+            where adminId=#{adminId}
+    </update>
+
+    <select id="selectAllAdminInfo" resultType="com.neko.neko.POJO.PO.adminPO.AdminPO">
+        select * from admin
+    </select>
+
+    <insert id="insertAdmin" parameterType="com.neko.neko.POJO.PO.adminPO.AdminPO">
+        insert into admin(adminAccount,adminPassword,adminId,adminName,authority)
+        values (#{adminAccount},#{adminPassword},#{adminId},#{adminName},#{authority})
+    </insert>
+
+    <delete id="deleteAdminAccount" parameterType="String">
+        delete from admin where adminId=#{adminId}
+    </delete>
+
+    <update id="changeImg" parameterType="com.neko.neko.POJO.PO.adminPO.AdminPO">
+        update admin
+        <set>
+            <if test="adminImg!='' and adminImg!=null">
+                adminImg=#{adminImg}
+            </if>
+        </set>
+        where adminId=#{adminId}
+    </update>
+
+    <update id="changeName" parameterType="com.neko.neko.POJO.PO.adminPO.AdminPO">
+        update admin
+        <set>
+            <if test="adminName!='' and adminName!=null">
+                adminName=#{adminName}
+            </if>
+        </set>
+        where adminId=#{adminId}
+    </update>
+
+    <select id="getAvatar" parameterType="String" resultType="String">
+        select adminImg from admin where adminId=#{adminId}
+    </select>
+
+    <select id="selectAdminByAdminId" resultType="com.neko.neko.POJO.PO.adminPO.AdminPO" parameterType="String">
+        select * from admin where adminId=#{adminId}
+    </select>
+
+</mapper>

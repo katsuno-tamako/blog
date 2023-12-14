@@ -1,0 +1,20 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neko.neko.Dao.ArticleDao.ArticleLabelDao">
+
+    <select id="selectAllLabel" resultType="com.neko.neko.POJO.PO.articlesPO.labelPO">
+        select * from article_label
+    </select>
+
+    <insert id="insertLabel" parameterType="com.neko.neko.POJO.PO.articlesPO.labelPO">
+        insert into article_label(label, labelIntroduce)
+        values (#{label}, #{labelIntroduce})
+    </insert>
+
+    <delete id="deleteLabel" parameterType="Integer">
+        delete from article_label where id=#{id}
+    </delete>
+
+</mapper>

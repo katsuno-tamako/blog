@@ -1,0 +1,28 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neko.neko.Dao.ArticleDao.SubClassifyDao">
+
+    <select id="selectSubClassify" resultType="com.neko.neko.POJO.PO.articlesPO.SubClassifyPO"
+            parameterType="String">
+        select * from subClassify where cid=#{cid}
+    </select>
+    
+    <insert id="addSubClassify" parameterType="com.neko.neko.POJO.PO.articlesPO.SubClassifyPO">
+        insert into subclassify (cid,subClassifyName) values (#{cid},#{subClassifyName})
+    </insert>
+
+    <delete id="deleteSubClassify" parameterType="integer">
+        delete from subclassify where subid=#{subid}
+    </delete>
+
+    <select id="selectSubClassifyByName"
+            resultType="com.neko.neko.POJO.PO.articlesPO.SubClassifyPO"
+            parameterType="String"
+    >
+        select * from subClassify where classifyName=#{classifyName}
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,29 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neko.neko.Dao.VisitorDao.VisitorDao">
+    <select id="selectVisitor" parameterType="String" resultType="com.neko.neko.POJO.PO.adminPO.VisitorPO">
+        select * from visitor where date_month=#{date_month}
+    </select>
+
+    <insert id="add" parameterType="com.neko.neko.POJO.PO.adminPO.VisitorPO">
+        insert into visitor(index_num,db_num,album_num,date_month) values (0,0,0,#{date_month})
+    </insert>
+
+    <update id="plus" parameterType="com.neko.neko.POJO.PO.adminPO.VisitorPO">
+        update visitor
+        <set>
+            <if test="index_num!=null and index_num!='' and index_num!=0">
+                index_num=index_num+1
+            </if>
+            <if test="db_num!=null and db_num!='' and db_num!=0">
+                ,db_num=db_num+1
+            </if>
+            <if test="album_num!=null and album_num!='' and album_num!=0">
+                ,album_num=album_num+1
+            </if>
+        </set>
+    </update>
+
+</mapper>
